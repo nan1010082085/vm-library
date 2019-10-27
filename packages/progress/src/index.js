@@ -1,94 +1,36 @@
 import Vue         from 'vue'
 import UicProgress from './progress.vue'
 
-const defaultOptions = {
-  color: '#297dff',
-  height: '2.5',
-  show: true,
-  timer: 1000,
-  maximum: 80
-}
+const ProgressLoader = Vue.extend(UicProgress)
 
-let dom = [];
-let currentDefault = { ...defaultOptions }
-
-function instance () {
-  if ( !dom.length ) {
-    const Progress = new (Vue.extend(UicProgress))({
-      el: document.createElement('div')
-    })
-    document.body.appendChild(Progress.$el)
-    dom.push(Progress)
-  }
-  return dom[ dom.length - 1 ]
-}
-
-function Progressies ( options = {} ) {
-  const Progress = instance();
-  //start max or min num
-  if ( options.maximum ) {
-    if ( isNaN(options.maximum) ) {
-      throw (new Error('maximun is NaN'))
-    }
+const Progress = ( options = {} ) => {
+  if ( Vue.prototype.$isServer ) return;
+  let instance = new ProgressLoader({
+    el: document.createElement('div')
+  })
+  window.onload = () => {
+    document.body.appendChild(instance.$el)
   }
   
-  options = {
-    ...currentDefault,
-    ...options,
-    remove () {
-      Progress.show = false
+  instance.start = () => {
+    instance.type = 'start'
+    instance.show = true
+    instance.initAnimate()
+  }
+  
+  instance.finish = () => {
+    instance.type = 'finish'
+    instance.show = true;
+    instance.initAnimate()
+    
+    setTimeout(() => {
+      instance.show = false
+      instance.remove()
       
-      if ( dom.length ) {
-        document.body.removeChild(Progress.$el)
-      }
-    }
+    }, instance.timer)
   }
   
-  Object.assign(Progress, options)
-  
-  return Progress
+  return instance
 }
 
-const createdProps = options => Progressies({ ...options })
-const Progress = new Progressies()
-//静态参数
-Progress.setDefaultOptions = options => {
-  createdProps(options)
-  
-  return Progress
-}
-
-//显示
-Progress.start = () => {
-  Progress.type = 'start'
-  Progress.show = true
-  if ( !dom.length ) {
-    document.body.appendChild(Progress.$el)
-    dom.push(Progress)
-    
-  }
-  
-  Progress.initAnimate()
-}
-//消失 清空dom
-Progress.finish = () => {
-  Progress.type = 'finish'
-  Progress.show = true;
-  if ( !dom.length ) {
-    document.body.appendChild(Progress.$el)
-    dom.push(Progress)
-  }
-  Progress.initAnimate()
-  
-  setTimeout(() => {
-    Progress.show = false
-    
-    dom.forEach(Progress => {
-      Progress.remove()
-    });
-    dom = []
-    
-  }, Progress.timer)
-}
-
-export default Progress;
+export default Progress();

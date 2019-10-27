@@ -6,10 +6,10 @@
 	</div>
 </template>
 <script>
-  import {UicButton, Progress} from '../src/index'
+  import '../src/index'
 
   export default {
-    components: {UicButton},
+    components: {},
     mixins: [],
     name: 'App',
     data () {
@@ -20,10 +20,10 @@
     watch: {},
     methods: {
       start () {
-        Progress.start();
+        // Progress.start();
       },
       finish () {
-        Progress.finish();
+        // Progress.finish();
       },
     },
     mounted () {

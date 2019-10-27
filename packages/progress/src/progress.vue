@@ -8,34 +8,49 @@
 </template>
 <script>
   export default {
-    name : "UicLoader",
+    name: "UicProgress",
     data () {
       return {
-        type:'',
-        back : 0,
-        inter : ''
+        type: '',
+        back: 0,
+        inter: '',
       }
     },
-    computed : {
-      gutter:{
-        get(){
-          return `width:${this.back}%;height:${this.height}px;background-color:${this.color};`
-				}
+    computed: {
+      gutter: {
+        get () {
+          return `width:${ this.back }%;height:${ this.height }px;background-color:${ this.color };`
+        }
       }
     },
-    props : {
-      color : String,
-      height:[Number, String],
-      show : Boolean,
-      timer : Number,
-      maximum : Number,
+    props: {
+      color: {
+        type: String,
+        default: '#297dff'
+      },
+      height: {
+        type: [ Number, String ],
+        default: '2'
+      },
+      show: {
+        type: Boolean,
+        default: false,
+      },
+      timer: {
+        type: Number,
+        default: 1000,
+      },
+      maximum: {
+        type: Number,
+        default: 80,
+      },
     },
-    watch : {},
-    methods : {
+    watch: {},
+    methods: {
       initAnimate () {
         this.back = 0
 
-        if(this.type === 'start'){
+        if ( this.type === 'start' ) {
           clearInterval(this.inter)
           let backWidth = 1;
 
@@ -46,11 +61,18 @@
               clearInterval(this.inter)
             }
           }, 100)
-				}else if(this.type === 'finish'){
+        } else if ( this.type === 'finish' ) {
           clearInterval(this.inter)
           this.back = 100
-				}
+        }
 
+      },
+      remove () {
+        this.show = false
+        if ( this.$el ) {
+          document.body.removeChild(this.$el)
+          this.$destroy();
+        }
       }
     },
     beforeDestroy () {

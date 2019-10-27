@@ -9,6 +9,8 @@ function resolve ( dir ) {
 const entry = {
   'vm-library-common': './src/index.js',
   'vm-library-common.mini': './src/index.js',
+  'UicButton': './packages/button/index.js',
+  'UicProgress': './packages/progress/index.js'
 };
 
 module.exports = {
@@ -21,9 +23,9 @@ module.exports = {
     libraryExport: "default",
     library: {
       root: 'uic',
-      commonjs: "uc-ui"
+      commonjs: "vm-library"
     },
-    libraryTarget: "umd",
+    libraryTarget: "umd"
   },
   externals: {
     vue: {
@@ -47,11 +49,11 @@ module.exports = {
         test: /\.vue$/,
         loader: 'vue-loader'
       },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: [ resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client') ]
-      },
+      // {
+      //   test: /\.js$/,
+      //   loader: 'babel-loader',
+      //   include: [ resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client') ]
+      // },
       {
         test: /\.css$/,
         use: [

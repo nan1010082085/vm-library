@@ -2,7 +2,7 @@
     "name": "vm-library",
     "version": "1.0.4",
     "description": "exercise npm publish, webpack build vue component",
-    "main": "dist/vm-library-common.mini.js",
+    "main": "src/main.js",
     "module": "src/index.js",
     "files": [
         "src",
