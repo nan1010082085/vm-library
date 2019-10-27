@@ -6,18 +6,32 @@ function resolve ( dir ) {
   return path.join(__dirname, '..', dir)
 }
 
+const entry = {
+  'vm-library-common': './src/index.js',
+  'vm-library-common.mini': './src/index.js',
+};
 
 module.exports = {
   mode: "none",
-  entry: {
-    'vm-library': './src/index.js',
-    'vm-library.mini': './src/index.js'
-  },
+  entry: entry,
   output: {
     filename: "[name].js",
-    library: 'vmLibrary',
-    libraryExport: 'default',
-    libraryTarget: "umd"
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: "",
+    libraryExport: "default",
+    library: {
+      root: 'uic',
+      commonjs: "uc-ui"
+    },
+    libraryTarget: "umd",
+  },
+  externals: {
+    vue: {
+      root: 'Vue',
+      commonjs: 'vue',
+      commonjs2: 'vue',
+      amd: 'vue'
+    }
   },
   optimization: {
     minimize: true,
@@ -46,7 +60,7 @@ module.exports = {
             loader: 'css-loader',
             options: {
               // 开启 CSS Modules
-              modules: false,
+              modules: false
             }
           }
         ]

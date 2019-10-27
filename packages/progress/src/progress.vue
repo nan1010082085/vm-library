@@ -8,7 +8,7 @@
 </template>
 <script>
   export default {
-    name : "loader",
+    name : "UicLoader",
     data () {
       return {
         type:'',
